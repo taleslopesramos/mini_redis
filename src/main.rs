@@ -27,23 +27,23 @@ fn main() {
     loop {
         println!("Make your request:");
         let mut input = string::String::new();
-        
+
         let _ = io::stdin().read_line(&mut input);
-        
+
         let req_op: Result<Request, String> = parse_request(input);
-        
+
         if req_op.is_err() {
             println!("Error: {}", req_op.err().unwrap());
             println!("");
             continue;
         }
-        
+
         let req = req_op.unwrap();
-        
+
         print_request(&req);
 
         let res= execute_request(&req, &mut database);
-        
+
         print_response(&res);
 
         if matches!(res, Response::Ok) && matches!(req, Request::Quit) {
@@ -139,7 +139,7 @@ fn parse_request(input: String) -> Result<Request, String> {
                 ("QUIT", None, None) => Request::Quit,        
                 _ => Request::Undefined
             };
-            
+
             match req {
                 Request::Undefined => return Err("Undefined or malformed action".to_owned()),
                 _ => Ok(req),
